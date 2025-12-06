@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
 import Signup from "./Signup";
 import Login from "./Login";
 import Home from "./Home";
@@ -12,7 +12,7 @@ import ScratchCard2 from "./ScratchCard2";
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
       <Navbar />
         <Routes>
           <Route path="/" element={
@@ -30,7 +30,7 @@ function App() {
             </ProtectedRoute>
             } />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
