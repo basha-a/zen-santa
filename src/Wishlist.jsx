@@ -1,0 +1,343 @@
+import { useState, useEffect } from "react";
+import { auth, db } from "./firebase";
+
+import { useAuth } from "./context/AuthContext";
+import { collection, addDoc, query, where, onSnapshot, doc, updateDoc,setDoc, getDoc,serverTimestamp } from "firebase/firestore";
+import Hero from "./component/Hero";
+import Hero2 from "./component/Hero2";
+
+
+export default function Wishlist() {
+  const { user } = useAuth();
+
+  // Form fields
+  const [wishlist1, setWishlist1] = useState("");
+  const [wishlist2, setWishlist2] = useState("");
+  const [wishlist3, setWishlist3] = useState("");
+
+  // List of data from Firestore
+  const [myData, setMyData] = useState(null);
+
+
+  const [isEditing, setIsEditing] = useState(false);
+//   const [editId, setEditId] = useState(null);
+
+const [loading, setLoading] = useState(true);
+
+const [showForm, setShowForm] = useState(false);
+
+
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setLoading(false);
+
+    if (!myData) {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+
+  }, 2000);
+
+  return () => clearTimeout(timer);
+}, [myData]);
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+      // VALIDATION: at least one wishlist required
+  if (!wishlist1 && !wishlist2 && !wishlist3) {
+    alert("Please enter at least 1 wishlist item.");
+    return;
+  }
+
+    try {
+      await setDoc(doc(db, "userWishlist", user.uid), {
+        uid: user.uid,
+        wishlist1,
+        wishlist2,
+        wishlist3,
+        username: user.email,
+        createdAt: serverTimestamp()
+      });
+      // clear form
+      setWishlist1("");
+      setWishlist2("");
+      setWishlist3("");
+
+      setShowForm(false); // hide form
+      fetchData();
+
+
+    } catch (err) {
+      console.error("Error adding document: ", err);
+      alert("Error saving data");
+    }
+  };
+
+// Move this OUTSIDE useEffect
+const fetchData = async () => {
+  if (!user) return;
+
+  const docRef = doc(db, "userWishlist", user.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    setMyData(data);
+    setWishlist1(data.wishlist1);
+    setWishlist2(data.wishlist2);
+    setWishlist3(data.wishlist3);
+    setIsEditing(true);
+  } else {
+    setMyData(null);
+    setIsEditing(false);
+  }
+};
+
+// Now useEffect calls it
+useEffect(() => {
+  fetchData();
+}, [user]);
+
+
+
+const handleUpdate = async (e) => {
+  e.preventDefault();
+
+    // VALIDATION: at least one wishlist required
+  if (!wishlist1 && !wishlist2 && !wishlist3) {
+    alert("Please enter at least 1 wishlist item.");
+    return;
+  }
+
+  try {
+    const docRef = doc(db, "userWishlist", user.uid);
+
+    await updateDoc(docRef, {
+      wishlist1,
+      wishlist2,
+      wishlist3,
+    });
+
+    setShowForm(false); // hide form
+    fetchData();
+
+  } catch (err) {
+    console.error("Update error:", err);
+  }
+};
+
+
+const editMyWishlist = () => {
+    setShowForm(prev => !prev);
+}
+
+  return (
+    <>
+
+   {showForm && (
+    <section id="form-section" className="mb-4" style={{position:"relative", height:"50vh", alignContent:"center"}}>
+      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjYLzenOcqZ6TJ_OZkE79OOinz9fIHeuLguNhEtPvRLDSWeOyhWWTzkS3fLYrMaSKq_RRt2Y5hWIw7PvJfpJ6ONxXPiA79UEnQ-EdK5rcC55-2WCUwQD9B-yFb7hajzJAZEuS1IWPzwssJOavdzgy3mdWuysVQgSWepzKpBBT5ajwka3ZcflRDhI3gs3jg" alt="" style={{position:"absolute" ,right:"50px", width:"500px", top:"0px"}} />
+      <h3 className="ms-5">Add Your Wishlists <span className="text-muted fs-6">(Budget Rs.1000)</span></h3>
+
+
+      <div className="mx-5">
+
+      <form onSubmit={isEditing ? handleUpdate : handleSubmit}>
+
+        <div className="w-50">
+          <input
+            type="text"
+            placeholder="Wishlist 1"
+            value={wishlist1}
+            onChange={(e) => setWishlist1(e.target.value)}
+            className="form-control"
+          />
+          <br />
+
+          <input
+            type="text"
+            placeholder="Wishlist 2"
+            value={wishlist2}
+            onChange={(e) => setWishlist2(e.target.value)}
+            className="form-control"
+          />
+          <br />
+
+          <input
+            type="text"
+            placeholder="Wishlist 3"
+            value={wishlist3}
+            onChange={(e) => setWishlist3(e.target.value)}
+            className="form-control"
+          />
+        </div>
+        <br />
+       
+        <button className="btn btn-sm btn-primary" type="submit">
+    {isEditing ? "Update Wishlist" : "Save Wishlist"}
+  </button>
+
+      </form>
+      </div>
+    </section>
+
+)}
+
+
+{!myData ? (
+  <div>
+    {loading && (
+        <div className="d-flex justify-content-center mt-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+    
+  </div>
+
+) : (
+
+<section className="mx-5 border border-rounded rounded p-5">
+  <div className="d-flex align-items-center">
+    <h3>My Wishlist:</h3> <button className="btn" onClick={editMyWishlist}><i className="bi bi-pencil text-success"></i></button>
+  </div>
+<div className="row">
+  <div className="col-4">
+    <div className="list-group w-100" id="list-tab" role="tablist">
+      <a
+        className="list-group-item list-group-item-action active"
+        id="list-wishliat1-list"
+        data-bs-toggle="list"
+        href="#list-wishliat1"
+        role="tab"
+        aria-controls="list-wishliat1"
+      >
+        {myData.wishlist1}
+      </a>
+      <a
+        className="list-group-item list-group-item-action"
+        id="list-wishlist2-list"
+        data-bs-toggle="list"
+        href="#list-wishlist2"
+        role="tab"
+        aria-controls="list-wishlist2"
+      >
+        {myData.wishlist2}
+      </a>
+      <a
+        className="list-group-item list-group-item-action"
+        id="list-wishlist3-list"
+        data-bs-toggle="list"
+        href="#list-wishlist3"
+        role="tab"
+        aria-controls="list-wishlist3"
+      >
+        {myData.wishlist3}
+      </a>
+    </div>
+  </div>
+
+  <div className="col-8">
+    <div className="tab-content" id="nav-tabContent">
+      <div
+        className="tab-pane fade show active"
+        id="list-wishliat1"
+        role="tabpanel"
+        aria-labelledby="list-wishliat1-list"
+      >
+        <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist1)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+      <div
+        className="tab-pane fade"
+        id="list-wishlist2"
+        role="tabpanel"
+        aria-labelledby="list-wishlist2-list"
+      >
+       <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist2)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+      <div
+        className="tab-pane fade"
+        id="list-wishlist3"
+        role="tabpanel"
+        aria-labelledby="list-wishlist3-list"
+      >
+        <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist3)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+)}
+
+    </>
+  );
+}
