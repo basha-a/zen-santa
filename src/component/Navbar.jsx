@@ -28,17 +28,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg ">
         <div className="container-fluid">
             <Link className="navbar-brand" to="/"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhh2P-tTMhp0vGmNcKxbE4A6XSgBm9JMWWXjMSqYdUMcvmGB0DIEZHdy_epUGjzd6Z18SePTlcCFErMdCjcLxJQcI9WVdNDUphs1EBuYtkgxzTygpYDiqOhCGE5MXHimXBTedfYRKCTPueNV1EmfbmQVvCwowW_btx9Z19_2IcPkEi4e-MHYR5yAM5A-Zo" style={{width: "50px", }} className='me-3' alt="" /> ZenSanta</Link>
-            <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            >
-            <span className="navbar-toggler-icon"></span>
-            </button>
+
 
             {user ? (
                 <div className="ms-auto d-flex">

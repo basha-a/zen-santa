@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 
 export default function ScratchCard2() {
@@ -8,6 +8,8 @@ export default function ScratchCard2() {
   const textRef = useRef(null);
   const imageRef = useRef(null);
   const canvasRenderRef = useRef(null);
+
+  const [wishlist, setWishlist] = useState(false);
 
   useEffect(() => {
     const isSafari = /^((?!chrome|android).)*safari/i.test(
@@ -108,6 +110,11 @@ export default function ScratchCard2() {
         text.textContent = "🎉 Your giftee revealed";
         image.classList.add("animate");
 
+        // setWishlist(true)
+        setTimeout(() => {
+          setWishlist(true);
+        }, 4000);
+
         coverContainer.addEventListener(
           "transitionend",
           () => coverContainer.classList.add("hidden"),
@@ -159,22 +166,22 @@ export default function ScratchCard2() {
     <div className="scratchcardpage-body">
 
         <svg width="0" height="0" style={{ position: "absolute" }}>
-  <filter id="remove-black" colorInterpolationFilters="sRGB">
-    <feColorMatrix
-      type="matrix"
-      values="1 0 0 0 0
-              0 1 0 0 0
-              0 0 1 0 0
-             -1 -1 -1 0 1"
-      result="black-pixels"
-    />
-    <feComposite in="SourceGraphic" in2="black-pixels" operator="out" />
-  </filter>
+          <filter id="remove-black" colorInterpolationFilters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                    -1 -1 -1 0 1"
+              result="black-pixels"
+            />
+            <feComposite in="SourceGraphic" in2="black-pixels" operator="out" />
+          </filter>
 
-  <filter id="noise">
-    <feTurbulence baseFrequency="0.5" />
-  </filter>
-</svg>
+          <filter id="noise">
+            <feTurbulence baseFrequency="0.5" />
+          </filter>
+        </svg>
 
 
       <div className="scratch-card">
@@ -217,6 +224,158 @@ export default function ScratchCard2() {
       <svg width="0" height="0">
         {/* Filters */}
       </svg>
+
+
+
+
+{wishlist && (
+
+<section className="mx-5 border border-rounded rounded p-5 w-50">
+  <div className="d-flex align-items-center">
+    <h3>Giftee's Wishlist:</h3> 
+    {/* <button className="btn" onClick={editMyWishlist}><i className="bi bi-pencil text-success"></i></button> */}
+  </div>
+<div className="row">
+  <div className="col-6">
+    <div className="list-group w-100" id="list-tab" role="tablist">
+      <a
+        className="list-group-item list-group-item-action active"
+        id="list-wishliat1-list"
+        data-bs-toggle="list"
+        href="#list-wishliat1"
+        role="tab"
+        aria-controls="list-wishliat1"
+      >
+        {/* {myData.wishlist1} */}
+        Potato
+      </a>
+      {/* {myData.wishlist2 && ( */}
+        <a
+        className="list-group-item list-group-item-action"
+        id="list-wishlist2-list"
+        data-bs-toggle="list"
+        href="#list-wishlist2"
+        role="tab"
+        aria-controls="list-wishlist2"
+      >
+        {/* {myData.wishlist2} */}
+        vanakkam
+      </a>
+      {/* )} */}
+      {/* {myData.wishlist3 && ( */}
+        <a
+        className="list-group-item list-group-item-action"
+        id="list-wishlist3-list"
+        data-bs-toggle="list"
+        href="#list-wishlist3"
+        role="tab"
+        aria-controls="list-wishlist3"
+      >
+        {/* {myData.wishlist3} */}
+        hilo
+      </a>
+      {/* )} */}
+    </div>
+  </div>
+
+  <div className="col-6">
+    <div className="tab-content" id="nav-tabContent">
+      <div
+        className="tab-pane fade show active"
+        id="list-wishliat1"
+        role="tabpanel"
+        aria-labelledby="list-wishliat1-list"
+      >
+        <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              // href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            // href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist1)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            // href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+      <div
+        className="tab-pane fade"
+        id="list-wishlist2"
+        role="tabpanel"
+        aria-labelledby="list-wishlist2-list"
+      >
+       <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              // href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            // href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist2)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            // href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+      <div
+        className="tab-pane fade"
+        id="list-wishlist3"
+        role="tabpanel"
+        aria-labelledby="list-wishlist3-list"
+      >
+        <h6 className="text-center w-50 mb-4">Search on</h6>
+        <section className="d-flex justify-content-around w-50">
+          <a 
+              // href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+              target="_blank"
+            >
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+          </a>
+          <a 
+            // href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist3)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+          </a>
+          <a 
+            // href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+            target="_blank"
+          >
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+          </a>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+)}
+
+
     </div>
   );
 }

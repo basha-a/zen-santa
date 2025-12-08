@@ -44,6 +44,34 @@ useEffect(() => {
 }, [myData]);
 
 
+  const handleSubmitAnything = async (e) => {
+    e.preventDefault();
+
+    console.log("Santa's choice");
+
+    try {
+      await setDoc(doc(db, "userWishlist", user.uid), {
+        uid: user.uid,
+        wishlist1: "Anything",
+        wishlist2 :"",
+        wishlist3: "",
+        username: user.email,
+        createdAt: serverTimestamp()
+      });
+      // clear form
+      setWishlist1("");
+      setWishlist2("");
+      setWishlist3("");
+
+      setShowForm(false); // hide form
+      fetchData();
+
+
+    } catch (err) {
+      console.error("Error adding document: ", err);
+      alert("Error saving data");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,6 +120,7 @@ const fetchData = async () => {
     setWishlist2(data.wishlist2);
     setWishlist3(data.wishlist3);
     setIsEditing(true);
+    console.log("Data", data)
   } else {
     setMyData(null);
     setIsEditing(false);
@@ -103,7 +132,25 @@ useEffect(() => {
   fetchData();
 }, [user]);
 
+const handleUpdateAnything = async (e) => {
+  e.preventDefault();
 
+  try {
+    const docRef = doc(db, "userWishlist", user.uid);
+
+    await updateDoc(docRef, {
+      wishlist1: "Anything",
+      wishlist2:"",
+      wishlist3:"",
+    });
+
+    setShowForm(false); // hide form
+    fetchData();
+
+  } catch (err) {
+    console.error("Update error:", err);
+  }
+}
 
 const handleUpdate = async (e) => {
   e.preventDefault();
@@ -179,8 +226,10 @@ const editMyWishlist = () => {
         <br />
        
         <button className="btn btn-sm btn-primary" type="submit">
-    {isEditing ? "Update Wishlist" : "Save Wishlist"}
-  </button>
+          {isEditing ? "Update Wishlist" : "Save Wishlist"}
+        </button>
+
+        <a onClick={isEditing ? handleUpdateAnything : handleSubmitAnything} className="btn btn-sm ms-4">Anything (Santa's choice)</a>
 
       </form>
       </div>
@@ -220,7 +269,8 @@ const editMyWishlist = () => {
       >
         {myData.wishlist1}
       </a>
-      <a
+      {myData.wishlist2 && (
+        <a
         className="list-group-item list-group-item-action"
         id="list-wishlist2-list"
         data-bs-toggle="list"
@@ -230,7 +280,9 @@ const editMyWishlist = () => {
       >
         {myData.wishlist2}
       </a>
-      <a
+      )}
+      {myData.wishlist3 && (
+        <a
         className="list-group-item list-group-item-action"
         id="list-wishlist3-list"
         data-bs-toggle="list"
@@ -240,6 +292,7 @@ const editMyWishlist = () => {
       >
         {myData.wishlist3}
       </a>
+      )}
     </div>
   </div>
 
