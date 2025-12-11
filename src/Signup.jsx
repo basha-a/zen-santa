@@ -39,7 +39,7 @@ export default function Signup() {
     // Send verification email
     await sendEmailVerification(user);
 
-    setError("Verification email sent! Please check your inbox.");
+    setError("Verification email sent! Please check your inbox. (If Zoho Mail pls check Notifications folder)");
 
     // Optionally redirect to login
 
