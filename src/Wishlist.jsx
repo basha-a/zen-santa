@@ -5,6 +5,7 @@ import { useAuth } from "./context/AuthContext";
 import { collection, addDoc, query, where, onSnapshot, doc, updateDoc,setDoc, getDoc,serverTimestamp } from "firebase/firestore";
 import Hero from "./component/Hero";
 import Hero2 from "./component/Hero2";
+import InstructionImage from "./component/InstructionImage";
 
 
 export default function Wishlist() {
@@ -183,26 +184,38 @@ const editMyWishlist = () => {
     setShowForm(prev => !prev);
 }
 
+const isURL = (str) => {
+  try {
+    new URL(str);
+    return true;
+  } catch {
+    return false;
+  }
+};
+//style={{position:"relative", height:"50vh", alignContent:"center"}} style={{position:"absolute" ,right:"50px", width:"500px", top:"0px"}} 
+
   return (
     <>
 
    {showForm && (
-    <section id="form-section" className="mb-4" style={{position:"relative", height:"50vh", alignContent:"center"}}>
-      <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjYLzenOcqZ6TJ_OZkE79OOinz9fIHeuLguNhEtPvRLDSWeOyhWWTzkS3fLYrMaSKq_RRt2Y5hWIw7PvJfpJ6ONxXPiA79UEnQ-EdK5rcC55-2WCUwQD9B-yFb7hajzJAZEuS1IWPzwssJOavdzgy3mdWuysVQgSWepzKpBBT5ajwka3ZcflRDhI3gs3jg" alt="" style={{position:"absolute" ,right:"50px", width:"500px", top:"0px"}} />
+    <section id="form-section" className="mb-4 row g- mt-5 mx-2" >
+
+
+    <div className="col-6">
       <h3 className="ms-5">Add Your Wishlists <span className="text-muted fs-6">(Budget Rs.1000)</span></h3>
 
 
-      <div className="mx-5">
+      <div className="mx-5 pe-5 w-100">
 
       <form onSubmit={isEditing ? handleUpdate : handleSubmit}>
 
-        <div className="w-50">
+        <div className="w-100">
           <input
             type="text"
             placeholder="Wishlist 1"
             value={wishlist1}
             onChange={(e) => setWishlist1(e.target.value)}
-            className="form-control"
+            className="form-control "
           />
           <br />
 
@@ -229,9 +242,19 @@ const editMyWishlist = () => {
           {isEditing ? "Update Wishlist" : "Save Wishlist"}
         </button>
 
-        <a onClick={isEditing ? handleUpdateAnything : handleSubmitAnything} className="btn btn-sm ms-4">Anything (Santa's choice)</a>
+        <a onClick={isEditing ? handleUpdateAnything : handleSubmitAnything} className="btn btn-sm ms-4 btn-outline-dark">Anything (Santa's choice)</a>
 
       </form>
+      </div>
+
+
+
+
+    </div>
+
+      <div className="col-6">
+        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjYLzenOcqZ6TJ_OZkE79OOinz9fIHeuLguNhEtPvRLDSWeOyhWWTzkS3fLYrMaSKq_RRt2Y5hWIw7PvJfpJ6ONxXPiA79UEnQ-EdK5rcC55-2WCUwQD9B-yFb7hajzJAZEuS1IWPzwssJOavdzgy3mdWuysVQgSWepzKpBBT5ajwka3ZcflRDhI3gs3jg" style={{width:"500px"}}  alt="" />
+
       </div>
     </section>
 
@@ -257,7 +280,7 @@ const editMyWishlist = () => {
     <h3>My Wishlist:</h3> <button className="btn" onClick={editMyWishlist}><i className="bi bi-pencil text-success"></i></button>
   </div>
 <div className="row">
-  <div className="col-4">
+  <div className="col-6">
     <div className="list-group w-100" id="list-tab" role="tablist">
       <a
         className="list-group-item list-group-item-action active"
@@ -267,7 +290,8 @@ const editMyWishlist = () => {
         role="tab"
         aria-controls="list-wishliat1"
       >
-        {myData.wishlist1}
+        {/* {myData.wishlist1} */}
+        {isURL(myData.wishlist1) ? "Link 1" : myData.wishlist1}
       </a>
       {myData.wishlist2 && (
         <a
@@ -278,7 +302,8 @@ const editMyWishlist = () => {
         role="tab"
         aria-controls="list-wishlist2"
       >
-        {myData.wishlist2}
+        {/* {myData.wishlist2} */}
+        {isURL(myData.wishlist2) ? "Link 2" : myData.wishlist2}
       </a>
       )}
       {myData.wishlist3 && (
@@ -290,13 +315,14 @@ const editMyWishlist = () => {
         role="tab"
         aria-controls="list-wishlist3"
       >
-        {myData.wishlist3}
+        {/* {myData.wishlist3} */}
+        {isURL(myData.wishlist3) ? "Link 3" : myData.wishlist3}
       </a>
       )}
     </div>
   </div>
 
-  <div className="col-8">
+  <div className="col-6">
     <div className="tab-content" id="nav-tabContent">
       <div
         className="tab-pane fade show active"
@@ -304,28 +330,43 @@ const editMyWishlist = () => {
         role="tabpanel"
         aria-labelledby="list-wishliat1-list"
       >
-        <h6 className="text-center w-50 mb-4">Search on</h6>
-        <section className="d-flex justify-content-around w-50">
-          <a 
-              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
-              target="_blank"
-            >
-              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
-          </a>
-          <a 
-            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist1)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
 
-          </a>
-          <a 
-            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
-          </a>
-        </section>
+        {isURL(myData.wishlist1) ? (
+          <div>
+            <h6 className="text-center w-75 mb-4">Link of the Product!</h6>
+            <section className="d-flex justify-content-around w-75">
+              <a href={myData.wishlist1} className="btn btn-sm btn-warning" target="_blank">Open Link</a>
+            </section>
+          </div>
+        ) : (
+          <div>
+            <h6 className="text-center w-75 mb-4">Search on</h6>
+            <section className="d-flex justify-content-around w-75">
+              
+              <a 
+                  href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+                  target="_blank"
+                >
+                  <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+              </a>
+              <a 
+                href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist1)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+
+              </a>
+              <a 
+                href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist1)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+              </a>
+            </section>
+          </div>
+        )}
+
+        
       </div>
       <div
         className="tab-pane fade"
@@ -333,28 +374,40 @@ const editMyWishlist = () => {
         role="tabpanel"
         aria-labelledby="list-wishlist2-list"
       >
-       <h6 className="text-center w-50 mb-4">Search on</h6>
-        <section className="d-flex justify-content-around w-50">
-          <a 
-              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
-              target="_blank"
-            >
-              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
-          </a>
-          <a 
-            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist2)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+       {isURL(myData.wishlist2) ? (
+          <div>
+            <h6 className="text-center w-75 mb-4">Link of the Product!</h6>
+            <section className="d-flex justify-content-around w-75">
+              <a href={myData.wishlist2} className="btn btn-sm btn-warning" target="_blank">Open Link</a>
+            </section>
+          </div>
+        ) : (
+          <div>
+            <h6 className="text-center w-75 mb-4">Search on</h6>
+            <section className="d-flex justify-content-around w-75">
+              
+              <a 
+                  href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+                  target="_blank"
+                >
+                  <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+              </a>
+              <a 
+                href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist2)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
 
-          </a>
-          <a 
-            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
-          </a>
-        </section>
+              </a>
+              <a 
+                href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist2)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+              </a>
+            </section>
+          </div>
+        )}
       </div>
       <div
         className="tab-pane fade"
@@ -362,28 +415,40 @@ const editMyWishlist = () => {
         role="tabpanel"
         aria-labelledby="list-wishlist3-list"
       >
-        <h6 className="text-center w-50 mb-4">Search on</h6>
-        <section className="d-flex justify-content-around w-50">
-          <a 
-              href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
-              target="_blank"
-            >
-              <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
-          </a>
-          <a 
-            href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist3)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
+        {isURL(myData.wishlist3) ? (
+          <div>
+            <h6 className="text-center w-75 mb-4">Link of the Product!</h6>
+            <section className="d-flex justify-content-around w-75">
+              <a href={myData.wishlist3} className="btn btn-sm btn-warning" target="_blank">Open Link</a>
+            </section>
+          </div>
+        ) : (
+          <div>
+            <h6 className="text-center w-75 mb-4">Search on</h6>
+            <section className="d-flex justify-content-around w-75">
+              
+              <a 
+                  href={`https://www.flipkart.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+                  target="_blank"
+                >
+                  <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" width={"30px"} alt="" />
+              </a>
+              <a 
+                href={`https://www.amazon.in/s?k=${encodeURIComponent(myData.wishlist3)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/amazon-icon.png" width={"30px"} alt="" />
 
-          </a>
-          <a 
-            href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
-            target="_blank"
-          >
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
-          </a>
-        </section>
+              </a>
+              <a 
+                href={`https://www.google.com/search?q=${encodeURIComponent(myData.wishlist3)}`} 
+                target="_blank"
+              >
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png" width={"30px"} alt="" />
+              </a>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   </div>
@@ -391,6 +456,8 @@ const editMyWishlist = () => {
 </section>
 )}
 
+
+<InstructionImage />
     </>
   );
 }

@@ -177,3 +177,64 @@
 .no-caret::after {
   display: none !important;
 }
+
+
+
+.image-slide-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 500px;
+  height: 400px;
+  background-color: #555;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  border-top-right-radius: 50%;
+
+
+      /* aspect-ratio: 1.5; */
+    /* z-index: -10; */
+    /* border-radius: 100%; */
+    background: linear-gradient(180deg, #464363, #0000);
+    filter: blur(8vw);
+    /* transform: none; */
+    /* opacity: .6; */
+
+}
+
+.santa-image{
+  width: 250px;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.santa-text{
+  /* width: 250px; */
+  position: absolute;
+  bottom: 230px;
+  left: 150px;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  cursor: pointer;
+}
+
+.hidden-image {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.visible-image {
+  transform: translateX(-15%);
+  opacity: 1;
+}
+
+
+
+    /* aspect-ratio: 1.5;
+    pointer-events: none;
+    z-index: -10;
+    border-radius: 100%;
+    background: linear-gradient(180deg, #64ff61, #0000);
+    filter: blur(15vw);
+    transform: none;
+    opacity: .4; */

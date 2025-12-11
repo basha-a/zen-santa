@@ -2,6 +2,8 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
+import { sendEmailVerification } from "firebase/auth";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,16 +12,45 @@ export default function Login() {
 
   const navigate = useNavigate();  // ← initialize navigation
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    //   alert("Logged in!");
-    navigate("/");
-    } catch (err) {
-      setError(err.message);
+
+  const resendVerification = async () => {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
+      await sendEmailVerification(auth.currentUser);
+      alert("Verification email sent again!");
     }
   };
+
+
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    // Allow login first
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Reload Firebase user data
+    await user.reload();
+
+    if (!user.emailVerified) {
+      setError("Please verify your email before logging in.");
+      return; // ❌ Do NOT sign out
+    }
+
+    console.log("email verified res...",user.emailVerified)
+
+    // Verified → allow navigation
+    navigate("/");
+
+  } catch (err) {
+    // console.log("myError",err)
+    const cleanedMessage = err.message.replace("Firebase: ", "");
+    setError(cleanedMessage);
+    // setError(err.message);
+  }
+};
+
 
   const alredyHaveAccount = (e) => {
     navigate("/signup");
@@ -27,17 +58,6 @@ export default function Login() {
 
   return (
     <>
-      {/* <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <input type="email" placeholder="Email"
-               onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password"
-               onChange={(e) => setPassword(e.target.value)} /> <br />
-        <button className="btn btn-primary" type="submit">Login</button>
-      </form> */}
-
-    
 
     <section className="vh-90">
   <div className="container py-5 h-100">
@@ -112,6 +132,9 @@ export default function Login() {
 
         </form>
       </div>
+      
+      {/* <button onClick={resendVerification}>Resend verification email</button>*/}
+
     </div>
   </div>
 </section>

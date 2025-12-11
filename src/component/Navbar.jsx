@@ -32,7 +32,7 @@ const Navbar = () => {
 
             {user ? (
                 <div className="ms-auto d-flex">
-                    <h5 className='mb-0'>Hi! <span className="text-primary">{username}</span></h5>
+                    <h5 className='mb-0 text-upppercase'>Hi! <span className="text-primary text-uppercase mb-0">{username}</span></h5>
                     {/* <button className='btn btn-sm btn-danger ms-3' onClick={handleLogout}>Logout</button> */}
                     
 <div className="dropdown">
@@ -58,7 +58,7 @@ const Navbar = () => {
   </ul>
 </div>
 
-
+{console.log(user)}
                 </div>
             ) : null}
         </div>

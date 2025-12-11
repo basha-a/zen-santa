@@ -2,6 +2,8 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
+import { sendEmailVerification } from "firebase/auth";
+
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -12,14 +14,46 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    //   alert("Account created!");
-    navigate("/");
 
-    } catch (err) {
-      setError(err.message);
-    }
+
+    // // Validate email domain
+    // if (!email.endsWith("@zentegra.com")) {
+    //   setError("Use your @zentegra.com email to Signup.");
+    //   return;
+    // }
+
+
+
+    // try {
+    //   await createUserWithEmailAndPassword(auth, email, password);
+    //    navigate("/");
+
+    // } catch (err) {
+    //   setError(err.message);
+    // }
+
+   try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Send verification email
+    await sendEmailVerification(user);
+
+    setError("Verification email sent! Please check your inbox.");
+
+    // Optionally redirect to login
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 8000);
+
+    
+
+  } catch (err) {
+    const cleanedMessage = err.message.replace("Firebase: ", "");
+    setError(cleanedMessage);
+    // setError(err.message);
+  }
   };
 
 const alredyHaveAccount = (e) => {
@@ -28,17 +62,6 @@ const alredyHaveAccount = (e) => {
 
   return (
     <>
-      {/* <h2>Signup</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSignup}>
-        <input type="email" placeholder="Email"
-               onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password"
-               onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Signup</button>
-      </form>
-      <button onClick={alredyHaveAccount} className="btn">Create new account</button> */}
-
 
       <section className="vh-90">
   <div className="container py-5 h-100">
