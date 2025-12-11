@@ -42,8 +42,6 @@ useEffect(() => {
     
   </section>
 
-  
-
 
     </>
   );

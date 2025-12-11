@@ -114,7 +114,7 @@ const alredyHaveAccount = (e) => {
 
           <div className="text-center my-3">
             <p className="text-center fw-bold mx-3 mb-3 text-muted">OR</p>
-            <button onClick={alredyHaveAccount} className="btn text-dark">Alredy have an account</button>
+            <button onClick={alredyHaveAccount} className="btn text-dark">Already have an account</button>
           </div>
 
           

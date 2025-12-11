@@ -202,7 +202,7 @@ const isURL = (str) => {
 
 
     <div className="col-6">
-      <h3 className="ms-5">Add Your Wishlists <span className="text-muted fs-6">(Budget Rs.1000)</span></h3>
+      <h3 className="ms-5">Add Your Wishlists <span className="text-muted fs-6">(Budget 500 to 700rs)</span></h3>
 
 
       <div className="mx-5 pe-5 w-100">
