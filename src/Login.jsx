@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
 import { sendEmailVerification } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 
 export default function Login() {
@@ -115,7 +116,7 @@ const handleLogin = async (e) => {
                 Remember me
               </label>
             </div>
-            <a href="#!">Forgot password?</a>
+            <Link to="/support" >Forgot password?</Link>
           </div>
 
           {/* Submit button */}

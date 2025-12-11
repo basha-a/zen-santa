@@ -8,6 +8,7 @@ import Wishlist from "./Wishlist";
 import Navbar from "./component/Navbar";
 import ScrachCard from "./ScrachCard";
 import ScratchCard2 from "./ScratchCard2";
+import Support from "./Support";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           } />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/support" element={<Support/>} />
           <Route path="/scratch" element={<ScrachCard />} />
           <Route path="/scratch2" element={<ScratchCard2 />} />
           <Route path="/wishlist" element={

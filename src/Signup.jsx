@@ -16,11 +16,11 @@ export default function Signup() {
     e.preventDefault();
 
 
-    // // Validate email domain
-    // if (!email.endsWith("@zentegra.com")) {
-    //   setError("Use your @zentegra.com email to Signup.");
-    //   return;
-    // }
+    // Validate email domain
+    if (!email.endsWith("@zentegra.com")) {
+      setError("Use your @zentegra.com email to Signup.");
+      return;
+    }
 
 
 

@@ -47,20 +47,26 @@ const Navbar = () => {
 
   <ul className="dropdown-menu dropdown-menu-end">
     <li>
-      <button className="dropdown-item btn btn-sm btn-danger"  onClick={handleLogout}>Logout
+      <button className="dropdown-item btn btn-sm text-danger"  onClick={handleLogout}>Logout
       </button>
     </li>
     <li>
-      <a className="dropdown-item" href="#">
+      <Link className="dropdown-item" to="/support">
         Support
-      </a>
+      </Link>
     </li>
   </ul>
 </div>
 
 {console.log(user)}
                 </div>
-            ) : null}
+            ) : (
+
+              <Link className="text-dark text-decoration-none" to="/support">
+        Contact support
+      </Link>
+
+            )}
         </div>
     </nav>
 
