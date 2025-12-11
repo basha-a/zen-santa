@@ -16,13 +16,13 @@ export default function Home() {
 
 useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      // If no user → redirect to login
+      
       if (!user) {
         navigate("/login");
         return;
       }
 
-      // Reload user data to get latest emailVerified status
+  
       await user.reload();
 
       if (!user.emailVerified) {
