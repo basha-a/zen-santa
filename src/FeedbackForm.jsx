@@ -46,7 +46,7 @@ export default function FeedbackForm() {
         gap: "12px",
       }}
     >
-      <h2>Leave Feedback</h2>
+      <h2>Leave Feedback about this App</h2>
 
       {/* ⭐ Star Rating */}
       <div style={{ display: "flex", gap: "5px" }}>

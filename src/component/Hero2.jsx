@@ -61,7 +61,7 @@ const Hero2 = () => {
             </div>
             <div className="d-grid d-md-flex flex-row gap-2">
               <Link to="/wishlist" className="btn btn-primary btn-lg">Create Your Wishlist</Link>
-              {/* <Link to="/scratch2" className="btn btn-outline-primary btn-lg btn-" >View My Giftee</Link> */}
+              <Link to="/scratch2" className="btn btn-outline-primary btn-lg btn-" >View My Giftee</Link>
             </div>
           </div>
         </div>

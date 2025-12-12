@@ -54,41 +54,7 @@ const secretSanta = {
 };
 
 
-  // const secretSanta = {
-  //   "deepthi@zentegra.com": "vinay@zentegra.com",
-  //   "faiyas@zentegra.com": "deepthi@zentegra.com",
-  //   "abhinand@zentegra.com": "faiyas@zentegra.com",
-  //   "ajay@zentegra.com": "abhinand@zentegra.com",
-  //   "ajayan@zentegra.com": "sanket@zentegra.com",
-  //   "akash@zentegra.com": "ajayan@zentegra.com",
-  //   "aneesh@zentegra.com": "akash@zentegra.com",
-  //   "arun@zentegra.com": "aneesh@zentegra.com",
-  //   "arya@zentegra.com": "arun@zentegra.com",
-  //   "basha@zentegra.com": "arya@zentegra.com",
-  //   "bhagyaraj@zentegra.com": "mani@zentegra.com",
-  //   "dayananda@zentegra.com": "bhagyaraj@zentegra.com",
-  //   "disha@zentegra.com": "dayananda@zentegra.com",
-  //   "jerald@zentegra.com": "basha@zentegra.com",
-  //   "jose@zentegra.com": "nithish@zentegra.com",
-  //   "karthik@zentegra.com": "jose@zentegra.com",
-  //   "lokesh@zentegra.com": "karthik@zentegra.com",
-  //   "mani@zentegra.com": "lokesh@zentegra.com",
-  //   "namratha@zentegra.com": "praveen@zentegra.com",
-  //   "nithish@zentegra.com": "namratha@zentegra.com",
-  //   "pachiyappan@zentegra.com": "jerald@zentegra.com",
-  //   "praveen@zentegra.com": "pachiyappan@zentegra.com",
-  //   "rudresh@zentegra.com": "disha@zentegra.com",
-  //   "sanjay@zentegra.com": "rudresh@zentegra.com",
-  //   "sanket@zentegra.com": "sanjay@zentegra.com",
-  //   "sneha@zentegra.com": "ajay@zentegra.com",
-  //   "srinivasa@zentegra.com": "sneha@zentegra.com",
-  //   "sudhanva@zentegra.com": "srinivasa@zentegra.com",
-  //   "sunil@zentegra.com": "sudhanva@zentegra.com",
-  //   "supreeth@zentegra.com": "sunil@zentegra.com",
-  //   "tejas@zentegra.com": "supreeth@zentegra.com",
-  //   "vijey@zentegra.com": "tejas@zentegra.com",
-  //   "vinay@zentegra.com": "vijey@zentegra.com"
-  // };
+
 
   console.log(secretSanta[myEmail])
 
@@ -105,6 +71,8 @@ const secretSanta = {
 
 
  const [showImage, setShowImage] = useState(false);
+
+   const [comments, setComments] = useState("");
 
   useEffect(() => {
     const isSafari = /^((?!chrome|android).)*safari/i.test(
@@ -559,10 +527,19 @@ const secretSanta = {
       </div>
     </div>
   </div>
+  {userData.comments && (
+  <p className="mt-3">Comments: <span className="text-primary">{userData.comments}</span></p>
+)}
 </div>
 <hr />
 
+<div className="text-center">
+  <p className="mb-0">It’s time to spread some holiday cheer with our Secret Santa celebration!</p>
+<p className="mb-0">Please remember to keep your gifts within the <span className="text-primary">₹500–₹700</span> range so everyone can join in the fun.</p>
 
+<p className="mb-0">Let’s make this season joyful, exciting, and full of wonderful surprises.</p>
+<p className="mb-0 fw-semibold text-primary fs-5 mt-1">✨ Wishing everyone a warm and festive holiday! ✨</p>
+</div>
 </section>
 
 ) : (

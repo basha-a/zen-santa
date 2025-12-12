@@ -324,7 +324,7 @@ const isURL = (str) => {
 
 <section className="mx-5 border border-rounded rounded p-5">
   <div className="d-flex align-items-center">
-    <h3>My Wishlist:</h3> <button className="btn" onClick={editMyWishlist}><i className="bi bi-pencil text-success"></i></button>
+    <h3>My Wishlist:</h3> <button className="btn border-0" onClick={editMyWishlist} disabled><i className="bi bi-pencil text-success" ></i></button>
   </div>
 <div className="row">
   <div className="col-6">
