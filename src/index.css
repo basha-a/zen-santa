@@ -23,7 +23,7 @@
   align-items: center;
   min-height: 100vh;
   row-gap: 1em;
-  background-image: radial-gradient(circle, #fff 60%, #cfcecb);
+  /* background-image: radial-gradient(circle, #fff 60%, #cfcecb); */
   font-family: sans-serif;
 }
 
@@ -209,6 +209,10 @@
   transition: transform 0.6s ease-out, opacity 0.6s ease-out;
 }
 
+.feedback-div{
+  transition: transform 2s ease-out, opacity 2s ease-out;
+}
+
 .santa-text{
   /* width: 250px; */
   position: absolute;
@@ -218,9 +222,19 @@
   cursor: pointer;
 }
 
-.hidden-image {
-  transform: translateX(-100%);
+.hidden-feedback{
+  transform: translateX(100%);
   opacity: 0;
+}
+
+.hidden-image {
+  transform: translateX(-150%);
+  opacity: 0;
+}
+
+.visible-feedback {
+  transform: translateX(-5%);
+  opacity: 1;
 }
 
 .visible-image {
@@ -228,7 +242,9 @@
   opacity: 1;
 }
 
-
+.text-capitalize-first {
+    text-transform: capitalize;
+  }
 
     /* aspect-ratio: 1.5;
     pointer-events: none;

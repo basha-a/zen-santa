@@ -15,6 +15,7 @@ export default function Wishlist() {
   const [wishlist1, setWishlist1] = useState("");
   const [wishlist2, setWishlist2] = useState("");
   const [wishlist3, setWishlist3] = useState("");
+  const [comments, setComments] = useState("");
 
   // List of data from Firestore
   const [myData, setMyData] = useState(null);
@@ -27,6 +28,7 @@ const [loading, setLoading] = useState(true);
 
 const [showForm, setShowForm] = useState(false);
 
+const [isLoading, setIsLoading] = useState(false);
 
 
 useEffect(() => {
@@ -45,6 +47,10 @@ useEffect(() => {
 }, [myData]);
 
 
+
+
+
+
   const handleSubmitAnything = async (e) => {
     e.preventDefault();
 
@@ -56,6 +62,7 @@ useEffect(() => {
         wishlist1: "Anything",
         wishlist2 :"",
         wishlist3: "",
+        comments,
         username: user.email,
         createdAt: serverTimestamp()
       });
@@ -63,9 +70,13 @@ useEffect(() => {
       setWishlist1("");
       setWishlist2("");
       setWishlist3("");
+      setComments("");
 
-      setShowForm(false); // hide form
-      fetchData();
+      // setShowForm(false); 
+      // fetchData();
+
+      await fetchData();
+      setShowForm(false);
 
 
     } catch (err) {
@@ -77,18 +88,23 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("inside handle submit");
+
+
       // VALIDATION: at least one wishlist required
   if (!wishlist1 && !wishlist2 && !wishlist3) {
     alert("Please enter at least 1 wishlist item.");
     return;
   }
 
+  setIsLoading(true);  // <-- start loading
     try {
       await setDoc(doc(db, "userWishlist", user.uid), {
         uid: user.uid,
         wishlist1,
         wishlist2,
         wishlist3,
+        comments,
         username: user.email,
         createdAt: serverTimestamp()
       });
@@ -96,9 +112,13 @@ useEffect(() => {
       setWishlist1("");
       setWishlist2("");
       setWishlist3("");
+      setComments("");
+      setIsLoading(true);
 
-      setShowForm(false); // hide form
-      fetchData();
+      // setShowForm(false); // hide form
+      // fetchData();
+      await fetchData();
+      setShowForm(false);
 
 
     } catch (err) {
@@ -120,6 +140,7 @@ const fetchData = async () => {
     setWishlist1(data.wishlist1);
     setWishlist2(data.wishlist2);
     setWishlist3(data.wishlist3);
+    setComments(data.comments);
     setIsEditing(true);
     console.log("Data", data)
   } else {
@@ -143,10 +164,14 @@ const handleUpdateAnything = async (e) => {
       wishlist1: "Anything",
       wishlist2:"",
       wishlist3:"",
+      comments
     });
 
-    setShowForm(false); // hide form
-    fetchData();
+    // setShowForm(false); // hide form
+    // fetchData();
+
+    await fetchData();
+      setShowForm(false);
 
   } catch (err) {
     console.error("Update error:", err);
@@ -162,17 +187,25 @@ const handleUpdate = async (e) => {
     return;
   }
 
+  console.log("inside handle update");
+
   try {
     const docRef = doc(db, "userWishlist", user.uid);
+
+    console.log(docRef)
 
     await updateDoc(docRef, {
       wishlist1,
       wishlist2,
       wishlist3,
+      comments,
     });
 
-    setShowForm(false); // hide form
-    fetchData();
+    // setShowForm(false); // hide form
+    // fetchData();
+
+    await fetchData();
+      setShowForm(false);
 
   } catch (err) {
     console.error("Update error:", err);
@@ -200,10 +233,8 @@ const isURL = (str) => {
    {showForm && (
     <section id="form-section" className="mb-4 row g- mt-5 mx-2" >
 
-
     <div className="col-6">
       <h3 className="ms-5">Add Your Wishlists <span className="text-muted fs-6">(Budget 500 to 700rs)</span></h3>
-
 
       <div className="mx-5 pe-5 w-100">
 
@@ -235,14 +266,30 @@ const isURL = (str) => {
             onChange={(e) => setWishlist3(e.target.value)}
             className="form-control"
           />
+          <br />
+           <div className="mb-3">
+            
+            <textarea 
+              className="form-control" 
+              id="exampleFormControlTextarea1" 
+              rows="3" placeholder="Comments..." 
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+            ></textarea>
+          </div>
         </div>
         <br />
        
-        <button className="btn btn-sm btn-primary" type="submit">
+        <button 
+        className="btn btn-sm btn-primary" 
+        type="submit"
+        disabled={isLoading}
+        >
           {isEditing ? "Update Wishlist" : "Save Wishlist"}
         </button>
 
         <a onClick={isEditing ? handleUpdateAnything : handleSubmitAnything} className="btn btn-sm ms-4 btn-outline-dark">Anything (Santa's choice)</a>
+
 
       </form>
       </div>
@@ -453,6 +500,9 @@ const isURL = (str) => {
     </div>
   </div>
 </div>
+{comments && (
+  <p className="mt-3">Comments: <span className="text-primary">{comments}</span></p>
+)}
 </section>
 )}
 

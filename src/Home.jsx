@@ -12,6 +12,9 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export default function Home() {
 
+
+
+
   const navigate = useNavigate()
 
 useEffect(() => {
@@ -21,7 +24,6 @@ useEffect(() => {
         navigate("/login");
         return;
       }
-
   
       await user.reload();
 

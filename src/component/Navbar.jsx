@@ -32,7 +32,7 @@ const Navbar = () => {
 
             {user ? (
                 <div className="ms-auto d-flex">
-                    <h5 className='mb-0 text-upppercase'>Hi! <span className="text-primary text-uppercase mb-0">{username}</span></h5>
+                    <h5 className='mb-0 text-upppercase'>Hi! <span className="text-primary text-capitalize-first mb-0">{username}</span></h5>
                     {/* <button className='btn btn-sm btn-danger ms-3' onClick={handleLogout}>Logout</button> */}
                     
 <div className="dropdown">
@@ -53,6 +53,11 @@ const Navbar = () => {
     <li>
       <Link className="dropdown-item" to="/support">
         Support
+      </Link>
+    </li>
+    <li>
+      <Link className="dropdown-item" to="/feedback">
+        Feedback
       </Link>
     </li>
   </ul>
